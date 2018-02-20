@@ -1,19 +1,29 @@
 const http = require('http');
-const url = require('url');
+const express = require('express');
+const app = express();
+const server = http.Server(app);
 
+const nodeEnv = (process.env.NODE_ENV)?
+process.env.NODE_ENV:'development';
+if(nodeEnv !== 'production') {
+    console.log('Do some development stuff');
+}
 const hostName = '127.0.0.1';
 const port = '8080';
 
-const server = http.createServer((req, resp) => {
-    resp.statusCode = 200;
-    resp.setHeader('Content-Type', 'text/html');
+app.get('/', (req, res) => {
+    res.send('Hello Express Yes :)');
+});
 
-    const userAgent = req.headers['user-agent'];
-    const urlParts = url.parse(req.url, true);
-    const paramName = (!urlParts.query.name)? 'New Media Development' : urlParts.query.name;
-    console.log(urlParts);
+app.use((req, res, next) => {
+    const err = new Error('Not Found!');
+    err.status = 400;
+    next(err);
+});
 
-    resp.end(`<h1>Hello ${paramName}</h1><p>Your UserAgent is: ${userAgent}</p><p>I'm a watcher</p>`);
+app.use((err, req, res) => {
+    res.status(err.status || 500);
+    res.send('error');
 });
 
 server.listen(port, hostName, () => {
