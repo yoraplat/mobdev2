@@ -10,7 +10,7 @@
     "nodemon": "^1.15.1"
   },
   "scripts": {
-    "start": "echo 'Server started in production mode.\n' & node server.js",
-    "start-dev": "echo 'Server started in production mode.\n' & nodemon --config nodemon.json server.js"
+    "start": "echo 'Server started in production mode.' & node server.js",
+    "start-dev": "echo 'Server started in development mode.' & nodemon --config nodemon.json server.js"
   }
 }
